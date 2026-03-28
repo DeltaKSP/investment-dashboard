@@ -39,8 +39,19 @@ export const AssetItem = ({ asset, onClick }: AssetItemProps) => {
     >
       <div className="asset-info">
         <div className="asset-symbol">
-          <span className="asset-symbol-name">{asset.symbol}</span>
-          <span className="asset-symbol-subtitle">{asset.name}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {asset.image && (
+              <img
+                src={asset.image}
+                alt={asset.symbol}
+                style={{ width: '28px', height: '28px', borderRadius: '50%' }}
+              />
+            )}
+            <div>
+              <span className="asset-symbol-name">{asset.symbol}</span>
+              <span className="asset-symbol-subtitle">{asset.name}</span>
+            </div>
+          </div>
         </div>
       </div>
 

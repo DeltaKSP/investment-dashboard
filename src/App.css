@@ -68,7 +68,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, var(--gray-50) 0%, var(--primary-lighter) 100%);
-  color: var(--gray-900);
+  color: var(--gray-50);
   min-height: 100vh;
 }
 
@@ -182,13 +182,13 @@ header h1 {
   font-size: 2.5rem;
   font-weight: 900;
   margin: 0 0 0.5rem 0;
-  color: var(--gray-900);
+  color: var(--gray-50);
   letter-spacing: -1.5px;
 }
 
 header p {
   font-size: 1rem;
-  color: var(--gray-600);
+  color: var(--gray-400);
   margin: 0;
   display: flex;
   align-items: center;

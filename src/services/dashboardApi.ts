@@ -34,6 +34,11 @@ interface CoinGeckoMarketData {
   id: string;
   symbol: string;
   name: string;
+  image: string | {
+    large: string;
+    small: string;
+    thumb: string;
+  };
   current_price: number;
   price_change_24h: number;
   price_change_percentage_24h: number;
@@ -52,6 +57,7 @@ const mockAssets: Asset[] = [
     id: 'asset-1',
     name: 'Bitcoin',
     symbol: 'BTC',
+    image: 'https://example.com/bitcoin.png',
     type: 'crypto',
     currentPrice: 66316,
     change24h: -2416.81,
@@ -61,6 +67,7 @@ const mockAssets: Asset[] = [
     id: 'asset-2',
     name: 'Ethereum',
     symbol: 'ETH',
+    image: 'https://example.com/ethereum.png',
     type: 'crypto',
     currentPrice: 3500,
     change24h: -150,
@@ -70,6 +77,7 @@ const mockAssets: Asset[] = [
     id: 'asset-3',
     name: 'Cardano',
     symbol: 'ADA',
+    image: 'https://example.com/cardano.png',
     type: 'crypto',
     currentPrice: 0.98,
     change24h: 0.05,
@@ -77,41 +85,7 @@ const mockAssets: Asset[] = [
   },
 ];
 
-const mockPositions: Position[] = [
-  {
-    id: 'pos-1',
-    assetId: 'bitcoin',
-    asset: mockAssets[0],
-    quantity: 0.5,
-    averageCost: 45000,
-    currentValue: 33158,
-    gainLoss: 13158,
-    gainLossPercent: 47.36,
-  },
-  {
-    id: 'pos-2',
-    assetId: 'ethereum',
-    asset: mockAssets[1],
-    quantity: 2,
-    averageCost: 2000,
-    currentValue: 7000,
-    gainLoss: 3000,
-    gainLossPercent: 75,
-  },
-];
-
-const mockPortfolio: Portfolio = {
-  id: 'portfolio-1',
-  userId: 'user-1',
-  positions: mockPositions,
-  totalValue: 40158,
-  totalInvested: 19000,
-  totalGainLoss: 21158,
-  totalGainLossPercent: 111.36,
-  lastUpdated: new Date(),
-};
-
-// @ts-ignore - mockPortfolio é mantido para referência
+// @ts-ignore - mockTransactions é usado em getTransactions
 const mockTransactions: Transaction[] = [
     {
     id: 'tx-1',
@@ -165,20 +139,39 @@ async function fetchCoinGeckoData(): Promise<Asset[]> {
     }
 
     const data: CoinGeckoMarketData[] = await response.json();
+    console.log('✅ CoinGecko API - Dados recebidos:', data.length, 'ativos');
 
     // Transforma dados da API em Assets
-    return data.map((coin) => ({
-      id: coin.id,
-      name: coin.name,
-      symbol: coin.symbol.toUpperCase(),
-      type: 'crypto' as const,
-      currentPrice: coin.current_price,
-      change24h: coin.price_change_24h ?? 0,
-      change24hPercent: coin.price_change_percentage_24h ?? 0,
-    }));
+    const assets = data.map((coin) => {
+      // Image pode ser string ou objeto { large, small, thumb }
+      let imageUrl = '';
+      if (typeof coin.image === 'string') {
+        imageUrl = coin.image;
+      } else if (coin.image && typeof coin.image === 'object') {
+        imageUrl = coin.image.small || coin.image.large || coin.image.thumb || '';
+      }
+
+      const asset = {
+        id: coin.id,
+        name: coin.name,
+        symbol: coin.symbol.toUpperCase(),
+        image: imageUrl,
+        type: 'crypto' as const,
+        currentPrice: coin.current_price,
+        change24h: coin.price_change_24h ?? 0,
+        change24hPercent: coin.price_change_percentage_24h ?? 0,
+      };
+
+      console.log(`  → ${asset.symbol}: image="${asset.image.slice(0, 50)}..."`);
+      return asset;
+    });
+
+    console.log('✅ CoinGecko API - Transformação completa');
+    return assets;
   } catch (error) {
-    console.error('Erro ao buscar dados do CoinGecko:', error);
-    // Retorna dados mock se API falhar
+    console.error('❌ Erro ao buscar CoinGecko:', error);
+    console.log('⚠️  Retornando dados MOCK como fallback');
+    
     return mockAssets;
   }
 }

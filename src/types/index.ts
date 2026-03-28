@@ -17,6 +17,7 @@ export interface Asset {
   id: string;
   name: string;
   symbol: string;
+  image: string; // URL da imagem do ativo
   type: AssetType;
   currentPrice: number;
   change24h: number; // Percentual de mudança em 24h

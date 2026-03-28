@@ -37,8 +37,19 @@ export const PositionItem = ({ position, onClick }: PositionItemProps) => {
     >
       <div className="position-info">
         <div className="position-symbol">
-          <span className="position-symbol-name">{position.asset.symbol}</span>
-          <span className="position-symbol-subtitle">{position.asset.name}</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {position.asset.image && (
+              <img
+                src={position.asset.image}
+                alt={position.asset.symbol}
+                style={{ width: '28px', height: '28px', borderRadius: '50%' }}
+              />
+            )}
+            <div>
+              <span className="position-symbol-name">{position.asset.symbol}</span>
+              <span className="position-symbol-subtitle">{position.asset.name}</span>
+            </div>
+          </div>
         </div>
       </div>
 

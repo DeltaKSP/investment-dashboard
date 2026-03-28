@@ -178,9 +178,18 @@ export const DashboardPage = () => {
                 }}>
                   <span>🚀</span> Melhor
                 </div>
-                <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', fontWeight: 700 }}>
-                  {metrics.bestPosition.asset.name}
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                  {metrics.bestPosition.asset.image && (
+                    <img
+                      src={metrics.bestPosition.asset.image}
+                      alt={metrics.bestPosition.asset.symbol}
+                      style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                    />
+                  )}
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700 }}>
+                    {metrics.bestPosition.asset.name}
+                  </h3>
+                </div>
                 <div style={{ marginBottom: '1rem' }}>
                   <p style={{ fontSize: '0.85rem', color: '#6B7280', margin: '0 0 0.5rem 0', textTransform: 'uppercase', fontWeight: 600 }}>
                     Desempenho
@@ -217,9 +226,18 @@ export const DashboardPage = () => {
                 }}>
                   <span>📉</span> Pior
                 </div>
-                <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', fontWeight: 700 }}>
-                  {metrics.worstPosition.asset.name}
-                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                  {metrics.worstPosition.asset.image && (
+                    <img
+                      src={metrics.worstPosition.asset.image}
+                      alt={metrics.worstPosition.asset.symbol}
+                      style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+                    />
+                  )}
+                  <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700 }}>
+                    {metrics.worstPosition.asset.name}
+                  </h3>
+                </div>
                 <div style={{ marginBottom: '1rem' }}>
                   <p style={{ fontSize: '0.85rem', color: '#6B7280', margin: '0 0 0.5rem 0', textTransform: 'uppercase', fontWeight: 600 }}>
                     Desempenho

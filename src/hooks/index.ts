@@ -47,6 +47,7 @@ export const useDashboardData = (userId: string) => {
 
     try {
       dispatch({ type: 'SET_LOADING', payload: 'loading' });
+      console.log('📡 useDashboardData: Iniciando carregamento...');
 
       // Carrega dados em paralelo (mais eficiente)
       const [portfolio, assets, transactions] = await Promise.all([
@@ -54,6 +55,14 @@ export const useDashboardData = (userId: string) => {
         dashboardApi.getAssets(),
         dashboardApi.getTransactions(userId),
       ]);
+
+      console.log('📡 useDashboardData: Portfolio recebido:', {
+        positions: portfolio.positions.length,
+        firstPosition: portfolio.positions[0] ? {
+          symbol: portfolio.positions[0].asset.symbol,
+          image: portfolio.positions[0].asset.image ? portfolio.positions[0].asset.image.slice(0, 50) : 'VAZIO',
+        } : 'nenhuma',
+      });
 
       // Atualiza contexto
       dispatch({ type: 'SET_PORTFOLIO', payload: portfolio });
@@ -63,8 +72,10 @@ export const useDashboardData = (userId: string) => {
       dispatch({ type: 'SET_ERROR', payload: null });
 
       setHasLoaded(true);
+      console.log('✅ useDashboardData: Dados carregados com sucesso');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar dados';
+      console.error('❌ useDashboardData: Erro -', errorMessage);
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
       dispatch({ type: 'SET_LOADING', payload: 'error' });
     }
